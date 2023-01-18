@@ -1,8 +1,10 @@
 ﻿@model BiblioTecha.Models.BookModel
 
+
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <h1>Details</h1>
@@ -52,9 +54,12 @@
 </div>
 <img src="@Model.ImageLink" width="400px" height="400px"/>
 <div>
+   
      @if (ViewBag.IsAdmin == true) //
     {
         <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
     }
     <a asp-action="Index">Back to List</a>
 </div>
+
+

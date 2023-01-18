@@ -1,0 +1,7 @@
+﻿@model BiblioTecha.Models.BookModel
+<h4>Are you sure you want to change the available status for <b>@Model.Title </b>?</h4>
+<form asp-action="ChangeAvailability">
+        <input type="hidden" asp-for="Id" />
+    <input type="submit" value="ChangeAvailability" class="btn btn-success" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>

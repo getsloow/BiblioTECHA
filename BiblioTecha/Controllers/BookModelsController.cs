@@ -9,6 +9,7 @@ using BiblioTecha.Areas.Identity.Data;
 using BiblioTecha.Models;
 using Microsoft.AspNetCore.Identity;
 using BiblioTecha.Controllers;
+using BiblioTecha.Migrations;
 
 namespace BiblioTecha.Controllers
 {
@@ -28,15 +29,18 @@ namespace BiblioTecha.Controllers
     public async Task<IActionResult> Index()
         {
              var user = await _userManager.GetUserAsync(User);
+            var genres = _context.BookModel.Select(x => x.Genre).Distinct().ToList();
+            ViewBag.Genres = genres;
             if (user!=null)
             {
                 ViewBag.IsAdmin = user.isAdmin;
+
             }
             return View(await _context.BookModel.ToListAsync());
         }
 
-      //  [HttpGet("/BookModels/Genre")]
-     public async Task<IActionResult> Genre(string gen)
+        //  [HttpGet("/BookModels/Genre")]
+        public async Task<IActionResult> Genre(string gen)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user!=null)
@@ -108,7 +112,7 @@ namespace BiblioTecha.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Author,Available,ImageLink")] BookModel bookModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Author,Available,ImageLink,Genre")] BookModel bookModel)
         {
             if (id != bookModel.Id)
             {
@@ -174,6 +178,50 @@ namespace BiblioTecha.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> ChangeAvailability(int? id)
+        {
+            if (id == null || _context.BookModel == null)
+            {
+                return NotFound();
+            }
+
+            var bookModel = await _context.BookModel
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (bookModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(bookModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeAvailability(int id)
+        //{
+        //    var book = _context.BookModel.FirstOrDefault(x => x.Id == id);
+        //    if (book != null)
+        //    {
+        //        book.Available = !book.Available;
+        //        _context.SaveChanges();
+        //    }
+        //    return RedirectToAction(nameof(Index));
+        //}
+          {
+            if (_context.BookModel == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.BookModel'  is null.");
+            }
+            var bookModel = await _context.BookModel.FindAsync(id);
+            if (bookModel != null)
+            {
+                bookModel.Available = !bookModel.Available;
+            }
+            
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
 
         private bool BookModelExists(int id)
         {

@@ -6,13 +6,28 @@
 }
 
 <h1>Index</h1>
+<p>Please select "Details" for more information about a specific book, or select a genre already present in the database:</p>
+<select id="genreDropdown" onchange="location = '/BookModels/Genre?gen='+this.value;">
+    <option value="" disabled selected>Select a genre</option>
+    @foreach (var genre in ViewBag.Genres)
+    {
+        <option value="@genre">@genre</option>
+    }
+</select>
 
+<p>
+     @if (ViewBag.IsAdmin == true) //
+    {
+        <a asp-action="Create">Create New</a>
+    }
+</p>
 
-<form action="/BookModels/Genre">
+@*<form action="/BookModels/Genre">
     <label for="genreSearch">Search for a genre:</label>
     <input type="text" id="genreSearch" name="gen">
     <input type="submit" value="Search">
-</form>
+</form>*@
+
 <table class="table">
     <thead>
         <tr>
@@ -64,7 +79,19 @@
                  <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                  @if (ViewBag.IsAdmin == true) //
                 {
-                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                    @if (item.Available == true)
+                    {
+                        <a asp-action="ChangeAvailability" asp-route-id="@item?.Id">
+                            Free
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="ChangeAvailability" asp-route-id="@item?.Id">
+                            Reserve
+                        </a>
+                    }
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                  }
             </td>
