@@ -16,7 +16,7 @@
 </select>
 
 <p>
-     @if (ViewBag.IsAdmin == true) //
+    @if (User.IsInRole("Teacher")) //
     {
         <a asp-action="Create">Create New</a>
     }
@@ -77,7 +77,7 @@
          
             <td>
                  <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                 @if (ViewBag.IsAdmin == true) //
+                    @if (User.IsInRole("Teacher")) //
                 {
                     @if (item.Available == true)
                     {

@@ -17,36 +17,61 @@ namespace BiblioTecha.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public BookModelsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public BookModelsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager=userManager;
-           
+            _roleManager = roleManager;
         }
         
     // GET: BookModels
     public async Task<IActionResult> Index()
         {
-             var user = await _userManager.GetUserAsync(User);
+            var roleCreate = new IdentityRole { Name = "Teacher" };
+            var result = await _roleManager.CreateAsync(roleCreate);
+
+            var role = await _roleManager.FindByNameAsync("Teacher");
+            if (role == null)
+            {
+                // Role does not exist, handle the error
+            }
+
+            var user = await _userManager.FindByEmailAsync("profesor@test.com");
+            if (user == null)
+            {
+                // User does not exist, handle the error
+            }
+
+            var isInRole = await _userManager.IsInRoleAsync(user, "Teacher");
+
+
+            if (user != null && role != null)
+            {
+                var resultat = await _userManager.AddToRoleAsync(user, role.Name);
+
+                if (resultat.Succeeded)
+                {
+                    Console.WriteLine("e admin");
+                }
+                else
+                {
+                    // Failed to add role to user, check the errors in result.Errors
+                }
+            }
+
+
             var genres = _context.BookModel.Select(x => x.Genre).Distinct().ToList();
             ViewBag.Genres = genres;
-            if (user!=null)
-            {
-                ViewBag.IsAdmin = user.isAdmin;
-
-            }
+           
             return View(await _context.BookModel.ToListAsync());
         }
 
         //  [HttpGet("/BookModels/Genre")]
         public async Task<IActionResult> Genre(string gen)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user!=null)
-            {
-                ViewBag.IsAdmin = user.isAdmin;
-            }
+           
             var books = await _context.BookModel.Where(x => x.Genre == gen).ToListAsync();
             return View(books);
         }

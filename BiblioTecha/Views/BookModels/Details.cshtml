@@ -55,7 +55,7 @@
 <img src="@Model.ImageLink" width="400px" height="400px"/>
 <div>
    
-     @if (ViewBag.IsAdmin == true) //
+     @if (User.IsInRole("Teacher")) //
     {
         <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
     }

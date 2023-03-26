@@ -22,11 +22,7 @@ namespace BiblioTecha.Controllers
 
         public async Task<IActionResult>  Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user!=null) 
-            { 
-            ViewBag.IsAdmin = user.isAdmin;
-            }
+           
             return View(await _context.BookModel.ToListAsync());
             //return View();
         }
