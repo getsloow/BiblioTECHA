@@ -2,82 +2,77 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
 <p>Please select "Details" for more information about a specific book, or select a genre already present in the database:</p>
-<select id="genreDropdown" onchange="location = '/BookModels/Genre?gen='+this.value;">
+@*<select id="genreDropdown" onchange="location = '/BookModels/Genre?gen='+this.value;">
     <option value="" disabled selected>Select a genre</option>
     @foreach (var genre in ViewBag.Genres)
     {
         <option value="@genre">@genre</option>
     }
-</select>
+</select>*@
 
 <p>
     @if (User.IsInRole("Teacher")) //
     {
-        <a asp-action="Create">Create New</a>
+        <a class="btn btn-info" asp-action="Create">Add a new book</a>
     }
 </p>
 
-<div class="main">
-    <ul class="cards">
-        @foreach (var item in Model) { 
-            <li class="cards_item">
-                <div class="card">
-                    <div class="card_image"><img src="@item.ImageLink" alt=" "></div>
-                    <div class="card_content">
-                        <h2 class="card_title">@item.Title</h2>
-                        <h4 class="card_title">@item.Author <br/>
-                            @item.Genre</h4>
-                        <div class="card_text">
-                            <p>@item.Description</p>
-                            <a style="text-decoration:none" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                            @if (User.IsInRole("Teacher")) //
-                            {
-                                @if (item.Available == true)
+<div class="my-div">
+    <h2> Browse by genre:</h2>
+    @foreach (var genre in ViewBag.Genres)
+    {
+        <a class="btn btn-outline-info btn-lg col-12 mb-1 " asp-action="Genre" asp-controller="BookModels" asp-route-gen="@genre">@genre</a> <br />
+    }
+
+</div>
+<div style="width: 80%; height:40%;  float:right;">
+
+    <div class="main">
+        <ul class="cards">
+            @foreach (var item in Model)
+            {
+                <li class="cards_item">
+                    <div class="card">
+                        <div class="card_image"><img src="@item.ImageLink" alt=" "></div>
+                        <div class="card_content">
+                            <h2 class="card_title">@item.Title</h2>
+                            <h4 class="card_title">
+                                @item.Author <br />
+                                @item.Genre
+                            </h4>
+                            <div class="card_text">
+                                <p>@item.Description</p>
+                                <a style="text-decoration:none" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                @if (User.IsInRole("Teacher")) //
                                 {
-                                    <a style="text-decoration:none"asp-action="ChangeAvailability" asp-route-id="@item?.Id">
-                                        Free
-                                    </a>
+                                    @if (item.Available == true)
+                                    {
+                                        <a style="text-decoration:none" asp-action="ChangeAvailability" asp-route-id="@item?.Id">
+                                            Free
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a style="text-decoration:none" asp-action="ChangeAvailability" asp-route-id="@item?.Id">
+                                            Reserve
+                                        </a>
+                                    }
+                                    <a style="text-decoration:none" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                    <a style="text-decoration:none" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                 }
-                                else
-                                {
-                                    <a style="text-decoration:none" asp-action="ChangeAvailability" asp-route-id="@item?.Id">
-                                        Reserve
-                                    </a>
-                                }
-                                <a style="text-decoration:none" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                <a style="text-decoration:none" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            }
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
             }
-    </ul>
+        </ul>
+    </div>
+
 </div>
 
-@* 
-    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    @if (User.IsInRole("Teacher")) //
-                {
-                    @if (item.Available == true)
-                    {
-                        <a asp-action="ChangeAvailability" asp-route-id="@item?.Id">
-                            Free
-                        </a>
-                    }
-                    else
-                    {
-                        <a asp-action="ChangeAvailability" asp-route-id="@item?.Id">
-                            Reserve
-                        </a>
-                    }
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                 }
-                 *@
 

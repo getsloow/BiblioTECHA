@@ -111,3 +111,16 @@ body {
 html {
     font-size: 15px;
 }
+.my-div {
+    width: 20%;
+    height: 90%;
+    float: left;
+    /* Other styles as needed */
+}
+.fixed {
+    position: fixed;
+    top: 10px;
+    left: 4%;
+    float:left;
+    /* Other styles as needed */
+}

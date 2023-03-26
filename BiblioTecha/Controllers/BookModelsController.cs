@@ -10,6 +10,7 @@ using BiblioTecha.Models;
 using Microsoft.AspNetCore.Identity;
 using BiblioTecha.Controllers;
 using BiblioTecha.Migrations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BiblioTecha.Controllers
 {
@@ -25,8 +26,9 @@ namespace BiblioTecha.Controllers
             _userManager=userManager;
             _roleManager = roleManager;
         }
-        
-    // GET: BookModels
+
+        // GET: BookModels
+        [Authorize]
     public async Task<IActionResult> Index()
         {
             var roleCreate = new IdentityRole { Name = "Teacher" };
