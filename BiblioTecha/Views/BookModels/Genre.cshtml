@@ -10,57 +10,54 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>*@
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            @*   <th>
-            @Html.DisplayNameFor(model => model.AuthorCode)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Available)
-            </th>
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<p>Please select "Details" for more information about a specific book, or select a genre already present in the database:</p>
+
+<select id="genreDropdown" onchange="location = '/BookModels/Genre?gen='+this.value;">
+    <option value="" disabled selected>Select a genre</option>
+    @foreach (var genre in ViewBag.Genres)
+    {
+        <option value="@genre">@genre</option>
+    }
+</select>
+
+<div class="main">
+    <ul class="cards">
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Author)
-                </td>
-                @* <td>
-            @Html.DisplayFor(modelItem => item.AuthorCode)
-            </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Available)
-                </td>
-
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    @if (User.IsInRole("Teacher")) //
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    }
-                </td>
-            </tr>
+            <li class="cards_item">
+                <div class="card">
+                    <div class="card_image"><img src="@item.ImageLink" alt=" "></div>
+                    <div class="card_content">
+                        <h2 class="card_title">@item.Title</h2>
+                        <h4 class="card_title">
+                            @item.Author <br />
+                            @item.Genre
+                        </h4>
+                        <div class="card_text">
+                            <p>@item.Description</p>
+                            <a style="text-decoration:none" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            @if (User.IsInRole("Teacher")) //
+                            {
+                                @if (item.Available == true)
+                                {
+                                    <a style="text-decoration:none" asp-action="ChangeAvailability" asp-route-id="@item?.Id">
+                                        Free
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a style="text-decoration:none" asp-action="ChangeAvailability" asp-route-id="@item?.Id">
+                                        Reserve
+                                    </a>
+                                }
+                                <a style="text-decoration:none" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                <a style="text-decoration:none" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </li>
         }
-    </tbody>
-</table>
+    </ul>
+</div>

@@ -71,7 +71,9 @@ namespace BiblioTecha.Controllers
         //  [HttpGet("/BookModels/Genre")]
         public async Task<IActionResult> Genre(string gen)
         {
-           
+            var genres = _context.BookModel.Select(x => x.Genre).Distinct().ToList();
+            ViewBag.Genres = genres;
+
             var books = await _context.BookModel.Where(x => x.Genre == gen).ToListAsync();
             return View(books);
         }
