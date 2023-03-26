@@ -52,8 +52,18 @@
       
     </dl>
 </div>
-<a asp-action="Reserve" asp-route-id="@Model?.Id">Reserve</a>
+
 <img src="@Model.ImageLink" width="400px" height="400px"/>
+<br/>
+@if (Model.Available == 0)
+{
+    <font color="grey">Not available for reservation</font>
+}
+else
+{
+    <a asp-action="Reserve" asp-route-id="@Model?.Id">Reserve</a>
+}
+
 <div>
    
      @if (User.IsInRole("Teacher")) //

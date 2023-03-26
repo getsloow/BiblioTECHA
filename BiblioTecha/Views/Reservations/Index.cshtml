@@ -1,0 +1,13 @@
+﻿@model IEnumerable<BiblioTecha.Models.ReservationModel>
+
+@foreach (var item in Model)
+{
+    @item.Book.Title <br/>
+    @item.UserEmail <br/>
+    @item.ExpectedReturnDate
+    <form asp-controller="Reservations" asp-action="Free" method="post" style="display:inline-table" class="delete-btn">
+        <input type="hidden" name="id" value="@item.Id" />
+        <button type="submit" class="btn btn-danger">Free</button>
+    </form>
+    <hr/>
+}

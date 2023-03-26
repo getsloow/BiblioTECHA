@@ -111,8 +111,10 @@ namespace BiblioTecha.Controllers
             {
                 return NotFound();
             }
-
-            return View(bookModel);
+            if (bookModel.Available > 0)
+                return View(bookModel);
+            else
+                return NotFound();
         }
         [HttpPost]
         public async Task<IActionResult> Reserve(int? id)
@@ -126,9 +128,14 @@ namespace BiblioTecha.Controllers
                 ReservationDate= DateTime.Now,
                 UserEmail = User.Identity.Name
             };
-            _context.ReservationModel.Add(reservation);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                book.Available--;
+                _context.ReservationModel.Add(reservation);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(id);
         }
 
         // GET: BookModels/Create
