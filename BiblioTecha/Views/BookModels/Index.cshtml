@@ -41,16 +41,18 @@
                         <div class="card_image"><img src="@item.ImageLink" alt=" "></div>
                         <div class="card_content">
                             <h2 class="card_title">@item.Title</h2>
-                            <h4 class="card_title">
-                                @item.Author <br />
-                                @item.Genre
+                            <h5>@item.Author</h5>
+                            @item.Genre
+                            <h4 class="card_title" style="">
+                                
+                                
                             </h4>
                             <div class="card_text">
                                 <p>@item.Description</p>
                                 <a style="text-decoration:none" asp-action="Details" asp-route-id="@item.Id">Details</a>
                                 @if (User.IsInRole("Teacher")) //
                                 {
-                                    @if (item.Available == true)
+                                    @if (item.Available != 0)
                                     {
                                         <a style="text-decoration:none" asp-action="ChangeAvailability" asp-route-id="@item?.Id">
                                             Free

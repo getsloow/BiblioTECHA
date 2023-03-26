@@ -1,0 +1,9 @@
+﻿@model BookModel
+
+<h1> Reserving @Model.Title</h1>
+
+<form asp-action="Reserve">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Reserve" class="btn btn-danger" /> |
+    <a asp-action="Index">Back to List</a>
+</form>

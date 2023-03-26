@@ -98,6 +98,39 @@ namespace BiblioTecha.Controllers
             return View(bookModel);
         }
 
+        public async Task<IActionResult> ReserveAsync(int? id)
+        {
+            if (id == null || _context.BookModel == null)
+            {
+                return NotFound();
+            }
+
+            var bookModel = await _context.BookModel
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (bookModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(bookModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Reserve(int? id)
+        {
+            var book = await _context.BookModel.FirstOrDefaultAsync(m => m.Id == id);
+            var reservation = new ReservationModel
+            {
+                BookId = id.Value,
+                ExpectedReturnDate= DateTime.Now.AddDays(book.ReadingDays),
+                Book = book,
+                ReservationDate= DateTime.Now,
+                UserEmail = User.Identity.Name
+            };
+            _context.ReservationModel.Add(reservation);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: BookModels/Create
         public IActionResult Create()
         {
@@ -109,7 +142,7 @@ namespace BiblioTecha.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Author,Available,ImageLink,Genre")] BookModel bookModel)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Author,Available,ImageLink,Genre,ReadingDays")] BookModel bookModel)
         {
             if (ModelState.IsValid)
             {
@@ -227,15 +260,7 @@ namespace BiblioTecha.Controllers
 
         [HttpPost]
         public async Task<IActionResult> ChangeAvailability(int id)
-        //{
-        //    var book = _context.BookModel.FirstOrDefault(x => x.Id == id);
-        //    if (book != null)
-        //    {
-        //        book.Available = !book.Available;
-        //        _context.SaveChanges();
-        //    }
-        //    return RedirectToAction(nameof(Index));
-        //}
+      
           {
             if (_context.BookModel == null)
             {
@@ -244,7 +269,7 @@ namespace BiblioTecha.Controllers
             var bookModel = await _context.BookModel.FindAsync(id);
             if (bookModel != null)
             {
-                bookModel.Available = !bookModel.Available;
+                bookModel.Available--;
             }
             
             await _context.SaveChangesAsync();

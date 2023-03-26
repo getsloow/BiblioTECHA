@@ -33,4 +33,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
 
     public DbSet<BiblioTecha.Models.BookModel> BookModel { get; set; }
+    public DbSet<ReservationModel> ReservationModel { get; set; }
 }

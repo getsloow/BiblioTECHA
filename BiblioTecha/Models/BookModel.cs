@@ -8,11 +8,22 @@ namespace BiblioTecha.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string Author { get; set; }
-        public bool Available { get; set; }
-
+        public int Available { get; set; }
+        public int ReadingDays { get; set; }
         public string Genre { get; set; }
         public string ImageLink { get; set; }
 
-
     }
+
+    public class ReservationModel
+    {
+        public int Id { get; set; }
+        public string UserEmail { get; set; }
+        public int BookId { get; set; }
+        public BookModel Book { get; set; }
+        public DateTime ReservationDate { get; set; }
+        public DateTime ExpectedReturnDate { get; set; }
+    }
+
+
 }
