@@ -45,8 +45,10 @@ namespace BiblioTecha.Controllers
             {
                 // User does not exist, handle the error
             }
-
-            var isInRole = await _userManager.IsInRoleAsync(user, "Teacher");
+            else
+            {
+                var isInRole = await _userManager.IsInRoleAsync(user, "Teacher");
+            }
 
 
             if (user != null && role != null)
@@ -83,19 +85,27 @@ namespace BiblioTecha.Controllers
         // GET: BookModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.BookModel == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var bookModel = await _context.BookModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (bookModel == null)
+            var book = _context.BookModel
+                .Include(b => b.Author)
+                .FirstOrDefault(b => b.Id == id);
+
+            if (book == null)
             {
                 return NotFound();
             }
 
-            return View(bookModel);
+            var viewModel = new BookDetailsViewModel
+            {
+                Book = book,
+                Author = book.Author
+            };
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> ReserveAsync(int? id)
@@ -104,6 +114,9 @@ namespace BiblioTecha.Controllers
             {
                 return NotFound();
             }
+            var user = await _userManager.GetUserAsync(User);
+            var userScore = await _context.Users.Where(u => u.Email == user.Email).Select(u => u.UserScore).FirstOrDefaultAsync();
+            ViewBag.UserScore = userScore;
 
             var bookModel = await _context.BookModel
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -112,6 +125,7 @@ namespace BiblioTecha.Controllers
                 return NotFound();
             }
             if (bookModel.Available > 0)
+                
                 return View(bookModel);
             else
                 return NotFound();
@@ -141,22 +155,29 @@ namespace BiblioTecha.Controllers
         // GET: BookModels/Create
         public IActionResult Create()
         {
+            var authors = _context.AuthorModel.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Name }).ToList();
+
+            ViewBag.Authors = authors;
             return View();
         }
+
 
         // POST: BookModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Author,Available,ImageLink,Genre,ReadingDays")] BookModel bookModel)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,AuthorId,Available,ImageLink,Genre,ReadingDays")] BookModel bookModel)
         {
             if (ModelState.IsValid)
             {
+                var author = await _context.AuthorModel.FindAsync(bookModel.AuthorId);
+                bookModel.Author = author;
                 _context.Add(bookModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AuthorId"] = new SelectList(_context.AuthorModel, "Id", "Name", bookModel.AuthorId);
             return View(bookModel);
         }
 
@@ -173,6 +194,10 @@ namespace BiblioTecha.Controllers
             {
                 return NotFound();
             }
+            var authors = _context.AuthorModel.Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Name }).ToList();
+
+            ViewBag.Authors = authors;
+
             return View(bookModel);
         }
 
@@ -181,13 +206,15 @@ namespace BiblioTecha.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Author,Available,ImageLink,Genre")] BookModel bookModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,AuthorId,Available,ImageLink,Genre,ReadingDays")] BookModel bookModel)
         {
             if (id != bookModel.Id)
             {
                 return NotFound();
             }
 
+            var author = await _context.AuthorModel.FindAsync(bookModel.AuthorId);
+            bookModel.Author = author;
             if (ModelState.IsValid)
             {
                 try

@@ -2,6 +2,7 @@
 
 <h1> Reserving @Model.Title</h1>
 
+<h2> Your current User Score is: @ViewBag.UserScore</h2>
 <form asp-action="Reserve">
     <input type="hidden" asp-for="Id" />
     <input type="submit" value="Reserve" class="btn btn-danger" /> |

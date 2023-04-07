@@ -33,6 +33,19 @@ namespace BiblioTecha.Controllers
             if (reservation != null) { 
                 _context.ReservationModel.Remove(reservation);
                 reservation.Book.Available++;
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == reservation.UserEmail);
+                if (user != null)
+                   
+                {
+                    if (reservation.ExpectedReturnDate < DateTime.UtcNow)
+                    {
+                        user.UserScore--;
+                    }
+                    else
+                    {
+                        user.UserScore++;
+                    }
+                }
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

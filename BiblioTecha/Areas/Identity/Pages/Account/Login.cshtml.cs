@@ -19,6 +19,7 @@ using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BiblioTecha.Areas.Identity.Pages.Account
 {
@@ -30,11 +31,13 @@ namespace BiblioTecha.Areas.Identity.Pages.Account
 
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace BiblioTecha.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-
+            public int UserScore { get; set; }
             public bool IsAdmin { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -112,6 +115,7 @@ namespace BiblioTecha.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
+
         }
             
         
@@ -133,6 +137,7 @@ namespace BiblioTecha.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
 
+                    
                     _logger.LogInformation("User logged in.");
                     _logger.LogInformation(Input.IsAdmin.ToString());
                     return LocalRedirect(returnUrl);

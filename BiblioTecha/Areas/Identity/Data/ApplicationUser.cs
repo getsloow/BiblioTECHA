@@ -12,5 +12,6 @@ public class ApplicationUser : IdentityUser
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public bool isAdmin { get; set; }
+    public int UserScore { get; set; }
 }
 

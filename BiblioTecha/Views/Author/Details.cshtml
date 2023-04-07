@@ -1,0 +1,58 @@
+﻿@model BiblioTecha.Models.AuthorModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+	
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="middle-left-text col-md-6">
+            <p class="big-p">@Model.Bio</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <img src="@Model.ImageLink" class="img-fluid" />
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-12">
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+        <a asp-action="Details" asp-controller="BookModels" asp-route-id="@ViewBag.BookId">Back to List</a>
+    </div>
+</div>
+
+<div class="middle-text">
+	<p><strong>@Model.Name</strong></p>
+</div>
+
+<style>
+    .middle-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4rem !important;
+        color: white;
+        text-align: center;
+        text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+        z-index: 1;
+    }
+
+    .big-p{
+        font-size:20px;
+    }
+
+    /*.middle-left-text {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 50%;
+        max-width: 25%;
+        text-align: center;
+        text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+        z-index: 1;
+    }*/
+</style>
