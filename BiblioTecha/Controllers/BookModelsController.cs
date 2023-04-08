@@ -133,12 +133,15 @@ namespace BiblioTecha.Controllers
         [HttpPost]
         public async Task<IActionResult> Reserve(int? id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            var userScore = await _context.Users.Where(u => u.Email == user.Email).Select(u => u.UserScore).FirstOrDefaultAsync();
             var book = await _context.BookModel.FirstOrDefaultAsync(m => m.Id == id);
             var reservation = new ReservationModel
             {
                 BookId = id.Value,
                 ExpectedReturnDate= DateTime.Now.AddDays(book.ReadingDays),
                 Book = book,
+                UserScore = userScore,
                 ReservationDate= DateTime.Now,
                 UserEmail = User.Identity.Name
             };

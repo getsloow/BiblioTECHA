@@ -10,9 +10,9 @@
 </head>
 <body>
     <header>
-        <nav style="background-color:#4fa2a8" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+        <nav style="background-color:#565656" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <center> <a class="navbar-brand" asp-area="" asp-controller="BookModels" asp-action="Index">BiblioTecha</a> </center>
+                <center> <a class="navbar-brand" asp-area="" asp-controller="BookModels" asp-action="Index"><font color="#ff9900">BiblioTecha</font></a> </center>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,14 +22,14 @@
                         @if (User.IsInRole("Teacher"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">Reservations</a>
+                                <a class="nav-link text-dark" style="color:#ff9900" asp-area="" asp-controller="Reservations" asp-action="Index"> <font color="#ff9900">Reservations</font> </a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="Index">Authors</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="Index"><font color="#ff9900">Authors</font> </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="BookModels" asp-action="Index">Books</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="BookModels" asp-action="Index"><font color="#ff9900">Books</font> </a>
                         </li>
                     @*    @if (ViewBag.IsAdmin == true) //
                         {

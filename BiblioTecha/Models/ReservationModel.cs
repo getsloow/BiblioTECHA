@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string UserEmail { get; set; }
+        public int UserScore { get; set; }
         public int BookId { get; set; }
         public BookModel Book { get; set; }
         public DateTime ReservationDate { get; set; }
