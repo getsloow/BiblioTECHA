@@ -92,6 +92,7 @@ namespace BiblioTecha.Controllers
 
             var book = _context.BookModel
                 .Include(b => b.Author)
+                .Include(b => b.File)
                 .FirstOrDefault(b => b.Id == id);
 
             if (book == null)
@@ -102,7 +103,8 @@ namespace BiblioTecha.Controllers
             var viewModel = new BookDetailsViewModel
             {
                 Book = book,
-                Author = book.Author
+                Author = book.Author,
+                File = book.File
             };
 
             return View(viewModel);

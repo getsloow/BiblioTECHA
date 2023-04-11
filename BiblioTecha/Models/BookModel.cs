@@ -13,10 +13,12 @@ namespace BiblioTecha.Models
         public string ImageLink { get; set; }
         public int AuthorId { get; set; }
         public AuthorModel? Author { get; set; }
+        public FileModel? File { get; set; }
+
 
     }
 
-    
+
 
 
 }

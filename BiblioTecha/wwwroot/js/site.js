@@ -16,3 +16,46 @@ $(document).ready(function () {
         }
     });
 });
+
+function updateText() {
+    var input = document.getElementById("file");
+    var textChange = document.getElementById("textChange");
+    var uploadButton = document.getElementById("uploadButton");
+
+    if (input.files.length > 0) {
+        textChange.innerHTML = "Uploaded: " + input.files[0].name;
+        uploadButton.removeAttribute("disabled");
+    } else {
+        textChange.innerHTML = "Drag and drop a file here or click to choose a file.";
+        uploadButton.setAttribute("disabled", true);
+    }
+}
+var dropArea = document.getElementById("drop-area");
+
+dropArea.addEventListener("dragenter", function (event) {
+    event.preventDefault();
+    dropArea.style.backgroundColor = "#eee";
+});
+
+dropArea.addEventListener("dragover", function (event) {
+    event.preventDefault();
+    dropArea.style.backgroundColor = "#eee";
+});
+
+dropArea.addEventListener("dragleave", function (event) {
+    event.preventDefault();
+    dropArea.style.backgroundColor = "";
+});
+
+dropArea.addEventListener("drop", function (event) {
+    event.preventDefault();
+    dropArea.style.backgroundColor = "";
+
+    var fileInput = document.getElementById("file");
+    fileInput.files = event.dataTransfer.files;
+});
+
+dropArea.addEventListener("click", function () {
+    var fileInput = document.getElementById("file");
+    fileInput.click();
+});

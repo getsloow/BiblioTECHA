@@ -1,4 +1,5 @@
 ﻿using BiblioTecha.Areas.Identity.Data;
+using BiblioTecha.Controllers;
 
 namespace BiblioTecha.Models
 {
@@ -6,5 +7,6 @@ namespace BiblioTecha.Models
     {
         public BookModel Book { get; set; }
         public AuthorModel Author { get; set; }
+        public FileModel File { get; set; }
     }
 }

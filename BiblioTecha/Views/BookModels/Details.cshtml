@@ -9,6 +9,29 @@
 
 <h1>Details</h1>
 
+@if (Model.File != null)
+{
+    <a href="@Url.Action("Download", "File", new { id = Model.File.Id})">@Model.File.Name</a>
+}
+else
+{
+    <p>No files</p>
+}
+<form method="post" enctype="multipart/form-data" asp-action="Upload" asp-controller="File" asp-route-bookId="@Model.Book.Id">
+    <div class="form-group drop-zone">
+
+        <input type="file" id="file" name="file" onchange="updateText()" class="custom-file-input" style="display:none" />
+        <label class="custom-file-label" for="file" style="display:none">Choose file</label>
+        <div id="drop-area">
+            <p id="textChange">Drag and drop a file here or click to choose a file.</p>
+        </div>
+        <div class="text-right">
+            <button type="submit" class="btn btn-primary mt-3 col-12" id="uploadButton" disabled>Upload</button>
+        </div>
+
+    </div>
+</form>
+
 <div>
     <h4>BookModel</h4>
     <hr />

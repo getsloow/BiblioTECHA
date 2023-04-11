@@ -2,6 +2,8 @@
 
 @foreach (var item in Model)
 {
+    <div style="overflow:auto">
+    <img src="@item.Book.ImageLink"/ style="float:left; margin-right:10px;width:120px"> 
     <p>Book name: @item.Book.Title</p>
     <p>User that made the reservation: @item.UserEmail</p> 
     <p> Credit score when reservation happened: @item.UserScore </p>
@@ -10,5 +12,7 @@
         <input type="hidden" name="id" value="@item.Id" />
         <button type="submit" class="btn btn-danger">Free</button>
     </form>
+
     <hr/>
+    </div>
 }
