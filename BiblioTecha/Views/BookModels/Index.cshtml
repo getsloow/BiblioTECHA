@@ -4,22 +4,25 @@
     ViewData["Title"] = "Homepage";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <center>
-    <h1>Books List</h1>
-<p>Please select "Details" for more information about a specific book, or select a genre already present in the database:</p>
+    <h1>Welcome to BiblioTECHa</h1>
+<p>Please select "Details" for more information about a specific book, or select a genre present in our library:</p>
 
 <p>
     @if (User.IsInRole("Teacher")) //
     {
         <a class="btn btn-success" asp-action="Create">Add a new book</a>
+        <a class="btn btn-success" asp-action="Create" asp-controller="Author">Add a new Author</a>
     }
 </p>
 </center>
+
 <div class="my-div">
     <h2> Browse by genre:</h2>
     @foreach (var genre in ViewBag.Genres)
     {
-        <a  style="text-decoration:none" class="btn btn-primary col-12 mt-1" asp-action="Genre" asp-controller="BookModels" asp-route-gen="@genre">@genre</a> <br />
+        <a style="text-decoration:none" class="btn btn-secondary col-12 mt-1" asp-action="Genre" asp-controller="BookModels" asp-route-gen="@genre"><font color="#ffc875">@genre</font></a> <br />
     }
 
 </div>
@@ -54,5 +57,9 @@
 </div>
 
 </div>
+
+
+<img src="~/pics/Book_list_left.png" style="position:fixed; bottom:-10%; left:0%; width:30%;" alt="qwe" />
+@*<img src="~/pic/Project_details_right.png" style="position:fixed; bottom:0%; right:0%; width:10%;" alt="" />*@
 
 

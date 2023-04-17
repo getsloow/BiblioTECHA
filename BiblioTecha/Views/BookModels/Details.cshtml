@@ -7,38 +7,6 @@
 
 }
 
-<h1>Details</h1>
-
-@if (Model.File != null)
-{
-    <a href="@Url.Action("Download", "File", new { id = Model.File.Id})">@Model.File.Name</a>
-    <button class="btn btn-outline-danger" onclick="confirmDelete(@Model.File.Id)">Delete</button>
-    <form id="delete-form-@Model.File.Id" method="post" action="@Url.Action("Delete", "File", new { fileId = Model.File.Id })">
-   </form>
-}
-else
-{
-    <p>No files</p>
-    @if (User.IsInRole("Teacher"))
-    {
-        <form method="post" enctype="multipart/form-data" asp-action="Upload" asp-controller="File" asp-route-bookId="@Model.Book.Id">
-            <div class="form-group drop-zone">
-
-                <input type="file" id="file" name="file" onchange="updateText()" class="custom-file-input" style="display:none" />
-                <label class="custom-file-label" for="file" style="display:none">Choose file</label>
-                <div id="drop-area">
-                    <p id="textChange">Drag and drop a file here or click to choose a file.</p>
-                </div>
-                <div class="text-right">
-                    <button type="submit" class="btn btn-primary mt-3 col-12" id="uploadButton" disabled>Upload</button>
-                </div>
-
-            </div>
-        </form>
-    }
-  
-}
-
 
 <script>
     function confirmDelete(id) {
@@ -47,72 +15,117 @@ else
         }
     }
 </script>
+<a class="col-12 btn btn-outline-secondary" asp-action="Details" asp-controller="Author" asp-route-id="@Model?.Author.Id" asp-route-bookId="@Model?.Book.Id">Click here to find out about <strong>@Model.Author.Name</strong></a>
 
-<div>
-    <h4>BookModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Book.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Book.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Book.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Book.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Author.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            
-        <a asp-controller="Author" asp-action="Details" asp-route-id="@Model?.Author.Id" asp-route-bookId="@Model?.Book.Id">
-            @Html.DisplayFor(model => model.Author.Name)
-            </a>
-        </dd>
-       @* <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AuthorCode)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AuthorCode)
-        </dd>*@
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Book.Available)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Book.Available)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Book.Genre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Book.Genre)
-        </dd>
-      
-    </dl>
+<hr/>
+<div class="row">
+    <div class="col-md-6">
+        <div class="middle-left-text col-md-12">
+            <h4> Book Description</h4>
+            <br />
+            <p class="big-p">@Model.Book.Description</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <img src="@Model.Book.ImageLink" class="img-fluid" />
+    </div>
 </div>
 
-<img src="@Model.Book.ImageLink" width="400px" height="400px"/>
-<br/>
+
+<div class="middle-text">
+    <p><strong>@Model.Book.Title</strong></p>
+</div>
+
+<hr/>
+<style>
+    .middle-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4rem !important;
+        color: white;
+        text-align: center;
+        text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+        z-index: 1;
+    }
+
+    .big-p {
+        font-size: 20px;
+    }
+
+    /*.middle-left-text {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 50%;
+            max-width: 25%;
+            text-align: center;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }*/
+</style>
+<center>
+    @if (Model.Book.Available != 0)
+    {
+        <h4>Enjoying <strong> @Model.Book.Title</strong>? Download the digital version, or reserve one of the<font color="green"> @Model.Book.Available </font>books.</h4>
+    }
+    else
+    {
+        <h4>Enjoying <strong> @Model.Book.Title</strong>? Unfortunately, the book is not available in physical format at the moment, but you can always download the digital version from below </h4>
+    }
+    <div class="d-inline col-8" >
+
 @if (Model.Book.Available == 0)
 {
-    <font color="grey">Not available for reservation</font>
+    <font color="grey">Not available for reservation<br/></font>
 }
 else
 {
-    <a asp-action="Reserve" asp-route-id="@Model?.Book.Id">Reserve</a>
+    <a class="btn btn-primary col-4" asp-action="Reserve" asp-route-id="@Model?.Book.Id">Reserve</a>
 }
 
-<div>
-   
-     @if (User.IsInRole("Teacher")) //
+    @if (Model?.File != null)
     {
-        <a asp-action="Edit" asp-route-id="@Model?.Book.Id">Edit</a>
+        <a class="btn btn-success col-4" href="@Url.Action("Download", "File", new { id = Model.File.Id})">Download the Digital Version</a>
+      
     }
-    <a asp-action="Index">Back to List</a>
-</div>
 
+</div>
+<br/>
+@if (Model.File != null && User.IsInRole("Teacher"))
+    {
+        <button class="btn btn-outline-danger" onclick="confirmDelete(@Model?.File.Id)">Delete</button>
+        <form id="delete-form-@Model.File.Id" method="post" action="@Url.Action("Delete", "File", new { fileId = Model.File.Id })">
+        </form>
+    }
+  
+
+@if (Model?.File == null)
+    {
+        <p>Virtual version not available</p>
+        @if (User.IsInRole("Teacher"))
+        {
+            <form method="post" enctype="multipart/form-data" asp-action="Upload" asp-controller="File" asp-route-bookId="@Model.Book.Id">
+                <div class="form-group drop-zone">
+
+                    <input type="file" id="file" name="file" onchange="updateText()" class="custom-file-input" style="display:none" />
+                    <label class="custom-file-label" for="file" style="display:none">Choose file</label>
+                    <div id="drop-area">
+                        <p id="textChange">Drag and drop a file here or click to choose a file.</p>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary mt-3 col-12" id="uploadButton" disabled>Upload</button>
+                    </div>
+
+                </div>
+            </form>
+        }
+
+    }
+    <hr/>
+<div class="col-8">
+    <a asp-action="Index" class="btn btn-lg btn-outline-secondary col-12">Back to List</a>
+</div>
+</center>
 

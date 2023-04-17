@@ -4,8 +4,9 @@
     ViewData["Title"] = "Reservations";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@foreach (var item in Model)
+@if (User.IsInRole("Teacher"))
+{
+ @foreach (var item in Model)
 {
     <div style="overflow:auto">
     <img src="@item.Book.ImageLink"/ style="float:left; margin-right:10px;width:120px"> 
@@ -31,4 +32,36 @@
 
     <hr/>
     </div>
+    }
+
 }
+else
+{
+    @foreach (var item in Model)
+    {
+        @if (item.UserEmail == User?.Identity?.Name)
+        {
+            <div style="overflow:auto">
+                <img src="@item.Book.ImageLink" / style="float:left; margin-right:10px;width:120px">
+                <p>Book name: @item.Book.Title</p>
+                <p> Credit score when reservation happened: @item.UserScore </p>
+                <p>
+                    Reservation status: @if (item.ReservationStatus == 0)
+                    {
+                        <font color="yellow">Pending</font>
+                    }
+                    else
+                    {
+                        <font color="green"> Reserved</font>
+                    }
+                </p>
+                <p> Expected return date: @item.ExpectedReturnDate </p>
+                <br/>
+                <hr />
+            </div>
+        }
+        
+    }
+
+}
+

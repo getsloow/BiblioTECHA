@@ -19,7 +19,7 @@
     <h2> Browse by genre:</h2>
     @foreach (var genre in ViewBag.Genres)
     {
-        <a style="text-decoration:none" class="btn btn-primary col-12 mt-1" asp-action="Genre" asp-controller="BookModels" asp-route-gen="@genre">@genre</a> <br />
+        <a style="text-decoration:none" class="btn btn-secondary col-12 mt-1" asp-action="Genre" asp-controller="BookModels" asp-route-gen="@genre"> <font color="#ffc875">@genre</font></a> <br />
     }
 
 </div>
@@ -54,5 +54,6 @@
     </div>
 
 </div>
+<img src="~/pics/Book_details_left.png" style="position:fixed; bottom:-5%; left:0%; width:30%;" alt="qwe" />
 
 

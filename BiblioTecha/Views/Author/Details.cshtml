@@ -8,7 +8,9 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div class="middle-left-text col-md-6">
+        <div class="middle-left-text col-md-8">
+            <h4> Author Description</h4>
+            <br />
             <p class="big-p">@Model.Bio</p>
         </div>
     </div>
@@ -18,10 +20,15 @@
 </div>
 
 <div class="row mt-3">
-    <div class="col-md-12">
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-        <a asp-action="Details" asp-controller="BookModels" asp-route-id="@ViewBag.BookId">Back to List</a>
+    <center>
+    <div class="col-md-8 ">
+        @if (User.IsInRole("Teacher"))
+            {
+                <a asp-action="Edit" class="btn btn-lg btn-outline-info col-12" asp-route-id="@Model?.Id">Edit</a>
+            }
+        <a asp-action="Details" class="btn btn-lg btn-outline-secondary col-12" asp-controller="BookModels" asp-route-id="@ViewBag.BookId">Back to List</a>
     </div>
+    </center>
 </div>
 
 <div class="middle-text">
