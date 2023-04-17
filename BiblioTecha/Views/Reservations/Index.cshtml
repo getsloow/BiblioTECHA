@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<BiblioTecha.Models.ReservationModel>
 
+@{
+    ViewData["Title"] = "Reservations";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 @foreach (var item in Model)
 {
     <div style="overflow:auto">
@@ -7,7 +12,18 @@
     <p>Book name: @item.Book.Title</p>
     <p>User that made the reservation: @item.UserEmail</p> 
     <p> Credit score when reservation happened: @item.UserScore </p>
-    @item.ExpectedReturnDate
+    <p>Reservation status: @if(item.ReservationStatus == 0){ <font color="yellow">Pending</font>
+    }else { <font color="green"> Reserved</font>}
+    </p>
+        <p> Expected return date: @item.ExpectedReturnDate </p>
+        @if (item.ReservationStatus == 0 ) 
+        {
+             <form asp-controller="Reservations" asp-action="Confirm" method="post" style="display:inline-table" class="delete-btn">
+            <input type="hidden" name="id" value="@item.Id" />
+            <button type="submit" class="btn btn-success">Confirm Reservation</button>
+        </form>
+        }
+       
     <form asp-controller="Reservations" asp-action="Free" method="post" style="display:inline-table" class="delete-btn">
         <input type="hidden" name="id" value="@item.Id" />
         <button type="submit" class="btn btn-danger">Free</button>

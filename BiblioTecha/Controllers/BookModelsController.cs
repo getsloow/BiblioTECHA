@@ -144,6 +144,7 @@ namespace BiblioTecha.Controllers
                 ExpectedReturnDate= DateTime.Now.AddDays(book.ReadingDays),
                 Book = book,
                 UserScore = userScore,
+                ReservationStatus = 0,
                 ReservationDate= DateTime.Now,
                 UserEmail = User.Identity.Name
             };

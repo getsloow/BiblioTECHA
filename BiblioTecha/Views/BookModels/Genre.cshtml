@@ -1,68 +1,58 @@
 ﻿@model IEnumerable<BiblioTecha.Models.BookModel>
 
 @{
-    ViewData["Title"] = "Genre";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Browse by Genre";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<center>
+    <h1>Books List</h1>
+    <p>Please select "Details" for more information about a specific book, or select a genre already present in the database:</p>
 
-<h1>Genre</h1>
-@*
-<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
-
-<p>Please select "Details" for more information about a specific book, or select a genre already present in the database:</p>
-
+    <p>
+        @if (User.IsInRole("Teacher")) //
+        {
+            <a class="btn btn-success" asp-action="Create">Add a new book</a>
+        }
+    </p>
+</center>
 <div class="my-div">
     <h2> Browse by genre:</h2>
     @foreach (var genre in ViewBag.Genres)
     {
-        <a class="btn btn-outline-info btn-lg col-12 mb-1 " asp-action="Genre" asp-controller="BookModels" asp-route-gen="@genre">@genre</a> <br />
+        <a style="text-decoration:none" class="btn btn-primary col-12 mt-1" asp-action="Genre" asp-controller="BookModels" asp-route-gen="@genre">@genre</a> <br />
     }
 
 </div>
-<div style="width: 80%; height:100%;  float:right;">
+<div style="width: 76%; height:40%;  float:right;">
 
-    <div class="main">
-        <ul class="cards">
-            @foreach (var item in Model)
-            {
-                <li class="cards_item">
-                    <div class="card">
-                        <div class="card_image"><img src="@item.ImageLink" alt=" "></div>
-                        <div class="card_content">
-                            <h2 class="card_title">@item.Title</h2>
-                            <h4 class="card_title">
-                                @item.Author <br />
-                                @item.Genre
-                            </h4>
-                            <div class="card_text">
-                                <p>@item.Description</p>
-                                <a style="text-decoration:none" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                                @if (User.IsInRole("Teacher")) //
-                                {
-                                    @if (item.Available != 0)
-                                    {
-                                        <a style="text-decoration:none" asp-action="ChangeAvailability" asp-route-id="@item?.Id">
-                                            Free
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a style="text-decoration:none" asp-action="ChangeAvailability" asp-route-id="@item?.Id">
-                                            Reserve
-                                        </a>
-                                    }
-                                    <a style="text-decoration:none" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                    <a style="text-decoration:none" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            }
-        </ul>
+    <div class="wrapper">
+        @foreach (var item in Model)
+        {
+
+            <div class="card">
+                <img src="@item.ImageLink">
+                <div class="descriptions">
+                    <a style="text-decoration:none" class="btn btn-info align-content-center col-12" asp-action="Details" asp-route-id="@item.Id">
+                        Details
+                    </a>
+
+                    @if (User.IsInRole("Teacher")) //
+                    {
+                        <a class="btn btn-secondary align-content-center col-12" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-danger align-content-center col-12" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                    <h1>@item.Title</h1>
+                    <p>@item.Description</p>
+
+                </div>
+
+            </div>
+
+        }
+
+
     </div>
 
 </div>
+
 

@@ -12,25 +12,41 @@
 @if (Model.File != null)
 {
     <a href="@Url.Action("Download", "File", new { id = Model.File.Id})">@Model.File.Name</a>
+    <button class="btn btn-outline-danger" onclick="confirmDelete(@Model.File.Id)">Delete</button>
+    <form id="delete-form-@Model.File.Id" method="post" action="@Url.Action("Delete", "File", new { fileId = Model.File.Id })">
+   </form>
 }
 else
 {
     <p>No files</p>
+    @if (User.IsInRole("Teacher"))
+    {
+        <form method="post" enctype="multipart/form-data" asp-action="Upload" asp-controller="File" asp-route-bookId="@Model.Book.Id">
+            <div class="form-group drop-zone">
+
+                <input type="file" id="file" name="file" onchange="updateText()" class="custom-file-input" style="display:none" />
+                <label class="custom-file-label" for="file" style="display:none">Choose file</label>
+                <div id="drop-area">
+                    <p id="textChange">Drag and drop a file here or click to choose a file.</p>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary mt-3 col-12" id="uploadButton" disabled>Upload</button>
+                </div>
+
+            </div>
+        </form>
+    }
+  
 }
-<form method="post" enctype="multipart/form-data" asp-action="Upload" asp-controller="File" asp-route-bookId="@Model.Book.Id">
-    <div class="form-group drop-zone">
 
-        <input type="file" id="file" name="file" onchange="updateText()" class="custom-file-input" style="display:none" />
-        <label class="custom-file-label" for="file" style="display:none">Choose file</label>
-        <div id="drop-area">
-            <p id="textChange">Drag and drop a file here or click to choose a file.</p>
-        </div>
-        <div class="text-right">
-            <button type="submit" class="btn btn-primary mt-3 col-12" id="uploadButton" disabled>Upload</button>
-        </div>
 
-    </div>
-</form>
+<script>
+    function confirmDelete(id) {
+        if (confirm("Are you sure you want to delete this file?")) {
+            document.getElementById("delete-form-" + id).submit();
+        }
+    }
+</script>
 
 <div>
     <h4>BookModel</h4>

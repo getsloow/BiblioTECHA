@@ -26,6 +26,20 @@ namespace BiblioTecha.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Confirm (int? id)
+        {
+            var reservation = await _context.ReservationModel
+                .Include(r => r.Book).FirstOrDefaultAsync(i => i.Id == id);
+            if (reservation?.ReservationStatus == 0)
+            {
+                reservation.ReservationStatus = 1;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Free(int? id)
         {
             var reservation = await _context.ReservationModel
