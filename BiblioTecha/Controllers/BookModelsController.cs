@@ -68,7 +68,18 @@ namespace BiblioTecha.Controllers
 
             var genres = _context.BookModel.Select(x => x.Genre).Distinct().ToList();
             ViewBag.Genres = genres;
-           
+
+            var reservations = _context.ReservationModel.Include(a => a.Book).ToList();
+            foreach (var reservation in reservations)
+            {
+                if (reservation.ExpectedReturnDate - DateTime.Now < TimeSpan.FromDays(1))
+                {
+                    ViewBag.expected = true;
+                    break; // Optionally, exit the loop if a single pop-up is sufficient
+                }
+
+            }
+
             return View(await _context.BookModel.ToListAsync());
         }
 
@@ -107,7 +118,11 @@ namespace BiblioTecha.Controllers
                 File = book.File
             };
 
+            
+           
             return View(viewModel);
+
+        
         }
 
         public async Task<IActionResult> ReserveAsync(int? id)

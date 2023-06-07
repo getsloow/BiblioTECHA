@@ -57,6 +57,17 @@
 </div>
 
 </div>
+@{
+    if (ViewBag.expected != null && ViewBag.expected)
+    {
+        <script>
+            // JavaScript code to display the pop-up
+            window.onload = function () {
+                alert('Books are expected to be returned in less than one day! Please check "Reservations"!');
+            };
+        </script>
+    }
+}
 
 
 <img src="~/pics/Book_list_left.png" style="position:fixed; bottom:-10%; left:0%; width:30%;" alt="qwe" />
